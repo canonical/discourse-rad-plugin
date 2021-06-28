@@ -1,0 +1,10 @@
+en:
+  js:
+    dropdowns:
+      title: Multiple Dropdown
+    content:
+      title: Content
+
+    composer:
+      insert_dropdowns: "Option content..."
+      insert_content: "Content..."

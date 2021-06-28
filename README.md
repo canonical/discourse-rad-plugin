@@ -1,6 +1,6 @@
 # discourse-rad-plugin
 
-`discourse-rad-plugin` offers two custom bbcode tags to help adapting the documentation by the reader's desire:
+`discourse-rad-plugin` offers two custom bbcode tags to help adapt the documentation by the reader's desire:
 
 ### 1. Multiple Dropdown RAD element
 ```
@@ -31,6 +31,7 @@ All this plugin does is converting these custom bbcodes to HTML. The docs websit
 - each content inside the `[option]` tag will be assigned a unique class by concatenating the values of the option values together, hyphen separated (fx. the content for the option `[option version="snap-2.9" view="CLI"]` will be `snap-2.9-CLI`). **This means that the option values are case-sensitive**
 - option labels match the value of the option. The only transformation that happens is coverting `-` to `` (fx `snap-2.9` will show up at `snap 2.9`)
 - the default values on page load will always be the first option values of each unique dropdown
+
 Plugin markdown to html transformation steps:
 1. Step 1 html:
 ```html
