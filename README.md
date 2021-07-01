@@ -14,7 +14,7 @@
 
 ### 2. Content RAD element
 ```
-[content versions="snap-2.9-UI,deb-2.9-UI"]
+[content version="snap-2.9,deb-2.9" view="UI"]
 Content that shows only for snap-2.9/deb-2.9 and UI. 
 [/content]
 ```

@@ -2,25 +2,6 @@ import {withPluginApi} from 'discourse/lib/plugin-api';
 import ComposerController from 'discourse/controllers/composer';
 
 function initializeContent(api) {
-  api.decorateCooked(
-    $elem => {
-      const radContents = $elem.find(`.rad-element`);
-
-      radContents.each(function() {
-        const radContent = $(this);
-        const versions = radContent.data('versions');
-        const classesList = versions.split(',');
-
-        for (let i = 0; i < classesList.length; i++) {
-          radContent.addClass(classesList[i]);
-        }
-
-        radContent.removeAttr('data-versions');
-      });
-    },
-    {id: 'discourse-rad-plugin-content'}
-  );
-
   api.addToolbarPopupMenuOptionsCallback(() => {
     return {
       action: 'insertDiv',
@@ -33,7 +14,7 @@ function initializeContent(api) {
     actions: {
       insertDiv() {
         this.get('toolbarEvent').applySurround(
-          '[content versions="classes"]',
+          '[content name="value1,value2" name2="value1,value2"]',
           '[/content]',
           'insert_content'
         );

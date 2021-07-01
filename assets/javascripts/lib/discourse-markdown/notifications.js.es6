@@ -3,7 +3,7 @@ export function setup(helper) {
     return;
   }
 
-  helper.allowList(['div.rad-dropdowns-element', 'div.rad-option-element', 'div.rad-element']);
+  helper.allowList(['div.rad-dropdowns-element', 'div.rad-element', 'div.rad-tabs-element', 'div.rad-tab-element', 'div.p-button-group__inner', 'div.p-button-group__buttons']);
 
   function setupRad(md) {
     const ruler = md.block.bbcode.ruler;
@@ -24,7 +24,7 @@ export function setup(helper) {
     ruler.push('option', {
       tag: 'option',
       wrap: (token, tag) => {
-        token.attrs = [['class', 'rad-option-element']];
+        token.attrs = [['class', 'rad-element']];
 
         for (let key in tag.attrs) {
           token.attrs.push([`data-${key}`, tag.attrs[key]]);
@@ -37,12 +37,41 @@ export function setup(helper) {
     ruler.push('content', {
       tag: 'content',
       wrap: (token, tag) => {
-        if (!('versions' in tag.attrs)) {
-          return true;
+        token.attrs = [['class', 'rad-element']];
+
+        for (let key in tag.attrs) {
+          token.attrs.push([`data-${key}`, tag.attrs[key]]);
         }
 
-        token.attrs = [['class', 'rad-element']];
-        token.attrs.push([`data-versions`, tag.attrs.versions]);
+        return true;
+      }
+    });
+
+    ruler.push('tabs', {
+      tag: 'tabs',
+      wrap: (token, tag) => {
+        token.attrs = [['class', 'rad-tabs-element']];
+
+        if ("name" in tag.attrs) {
+          token.attrs.push([`data-name`, tag.attrs.name]);
+        }
+
+        return true;
+      }
+    });
+
+    ruler.push('tab', {
+      tag: 'tab',
+      wrap: (token, tag) => {
+        token.attrs = [['class', 'rad-tab-element']];
+
+        if ("value" in tag.attrs) {
+          token.attrs.push([`data-value`, tag.attrs.value]);
+        }
+
+        if ("icon" in tag.attrs) {
+          token.attrs.push([`data-icon`, tag.attrs.icon]);
+        }
 
         return true;
       }

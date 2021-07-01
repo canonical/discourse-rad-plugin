@@ -8,7 +8,7 @@ function initializeDropdowns(api) {
 
       radDropdownsElements.each(function() {
         const radDropdownsElement = $(this);
-        const options = radDropdownsElement.find(`.rad-option-element`);
+        const options = radDropdownsElement.find(`.rad-element`);
         const header = $(`<div class='p-code-snippet__header'></div>`);
         const title = $(`<h5 class='p-code-snippet__title'></h5>`);
         const dropdowns = $(`<div class='p-code-snippet__dropdowns'></div>`);
@@ -45,16 +45,7 @@ function initializeDropdowns(api) {
 
         options.each(function() {
           const option = $(this);
-          let values = [];
-
-          for (const attributeName in option.data()) {
-            values.push(option.data(attributeName));
-            option.removeAttr(`data-${attributeName}`);
-          }
-
-          const radClass = values.reverse().join('-');
           option.addClass('p-code-snippet__block');
-          option.addClass(`${radClass}`);
         });
 
         radDropdownsElement.prepend(header);
