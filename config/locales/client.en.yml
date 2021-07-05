@@ -1,13 +1,7 @@
 en:
   js:
-    dropdowns:
-      title: Multiple Dropdown
-    content:
-      title: Content
     tabs:
       title: Tabs
 
     composer:
-      insert_dropdowns: "Option content..."
-      insert_content: "Content..."
       insert_tabs: "Tab..."

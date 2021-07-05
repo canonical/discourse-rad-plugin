@@ -4,31 +4,47 @@ import ComposerController from 'discourse/controllers/composer';
 function initializeTabs(api) {
   api.decorateCooked(
     $elem => {
-      const radTabsElements = $elem.find(`.rad-tabs-element`);
+      const radTabsElements = $elem.find(`.js-rad-tabs-element`);
 
       radTabsElements.each(function() {
         const radTabsElement = $(this);
-        const tabs = radTabsElement.find(`.rad-tab-element`);
-        const inner = $(`<div class='p-button-group__inner'>`);
-        radTabsElement.append(inner);
-        const buttons = $(`<div class='p-button-group__buttons'>`);
-        radTabsElement.append(buttons);
-        radTabsElement.addClass('p-button-group');
+        const tabs = radTabsElement.find(`.js-rad-content-element`);
+        const header = $(`<div class='p-code-snippet__header'></div>`);
+        const dropdowns = $(`<div class='p-code-snippet__dropdowns'></div>`);
+
+        radTabsElement.addClass('p-code-snippet');
+
+        const dropdownSettings = getDropdownSettings(tabs);
+        for (let i = 0; i < dropdownSettings.length; i++) {
+          const dropdownName = dropdownSettings[i].name;
+          const dropdown = $(`<select name="${dropdownName}"></select>`);
+          const dropdownOptions = dropdownSettings[i].options;
+
+          dropdown.addClass(`js-rad-dropdown-element`);
+          dropdown.addClass('p-code-snippet__dropdown');
+
+          if (dropdownOptions.length === 0) {
+            continue;
+          }
+
+          for (let i = 0; i < dropdownOptions.length; i++) {
+            const optionValue = dropdownOptions[i];
+            const optionLabel = optionValue.replace('-', ' ');
+            const option = `<option value="${optionValue}">${optionLabel}</option>`;
+
+            dropdown.append(option);
+          }
+
+          dropdowns.append(dropdown);
+        }
+        header.append(dropdowns);
 
         tabs.each(function() {
-          const tab = $(this);
-          const icon = tab.data('icon');
-          const text = tab.find(`p`).text();
-          const i = $(`<i class="p-icon--${icon}"></i><span>${text}</span>`);
-
-          tab.find(`p`).remove();
-          tab.addClass('p-button-group__button');
-          tab.addClass('is-smaller');
-          tab.removeAttr('data-icon');
-          tab.append(i);
+          const option = $(this);
+          option.addClass('p-code-snippet__block');
         });
 
-        radTabsElement.prepend($(`</div></div>`));
+        radTabsElement.prepend(header);
       });
     },
     {id: 'discourse-rad-plugin-tabs'}
@@ -46,13 +62,49 @@ function initializeTabs(api) {
     actions: {
       insertTabs() {
         this.get('toolbarEvent').applySurround(
-          '[tabs name="criteria"]\n[tab value="value" icon="icon"]',
+          '[tabs]\n[tab name="value"]',
           '[/tab]\n[/tabs]',
           'insert_tabs'
         );
       }
     }
   });
+}
+
+function getDropdownSettings(tabs) {
+  let dropdownSettings = [];
+  let attributesList = [];
+
+  tabs.each(function() {
+    const tab = $(this);
+    const attributes = tab.data();
+    let dropdownsOrder = [];
+
+    for (const attributeName in attributes) {
+      let attributeValue = tab.data(attributeName);
+
+      if (!(attributeName in attributesList)) {
+        dropdownsOrder.push(attributeName);
+        attributesList[attributeName] = [];
+      }
+
+      const splitValues = attributeValue.split(',');
+      for (let i = 0; i < splitValues.length; i++) {
+        if (attributesList[attributeName].indexOf(splitValues[i]) === -1) {
+          attributesList[attributeName].push(splitValues[i]);
+        }
+      }
+    }
+
+    for (let i = 0; i < dropdownsOrder.length; i++) {
+      dropdownSettings.unshift({
+        name: dropdownsOrder[i],
+        options: attributesList[dropdownsOrder[i]]
+      });
+    }
+  });
+
+  return dropdownSettings;
 }
 
 export default {
