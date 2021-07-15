@@ -1,0 +1,7 @@
+en:
+  js:
+    tabs:
+      title: Tabs
+
+    composer:
+      insert_tabs: "Tab..."
