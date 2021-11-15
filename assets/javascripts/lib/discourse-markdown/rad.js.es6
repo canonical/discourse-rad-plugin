@@ -3,12 +3,19 @@ export function setup(helper) {
     return;
   }
 
-  helper.allowList(['div.discourse-rad-element', 'div.js-rad-content-element', 'div.js-rad-tabs-element']);
+  helper.whiteList([
+    'div.discourse-rad-element',
+    'div.js-rad-content-element',
+    'div.js-rad-tabs-element',
+    'div.p-code-snippet__header',
+    'div.p-code-snippet__title',
+    'div.p-code-snippet__dropdowns',
+    'div.js-rad-dropdown-element.p-code-snippet__dropdown',
+    'div.js-rad-content-element.p-code-snippet__block'
+  ]);
 
-  function setupRad(md) {
-    const ruler = md.block.bbcode.ruler;
-
-    ruler.push('tabs', {
+  helper.registerPlugin(md => {
+    md.block.bbcode.ruler.push('tabs', {
       tag: 'tabs',
       wrap: token => {
         token.attrs = [['class', 'js-rad-tabs-element']];
@@ -27,7 +34,7 @@ export function setup(helper) {
       }
     });
 
-    ruler.push('tab', {
+    md.block.bbcode.ruler.push('tab', {
       tag: 'tab',
       wrap: (token, tag) => {
         token.attrs = [['class', 'js-rad-content-element']];
@@ -39,7 +46,5 @@ export function setup(helper) {
         return true;
       }
     });
-  }
-
-  helper.registerPlugin(setupRad);
+  });
 }
