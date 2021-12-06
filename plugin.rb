@@ -3,5 +3,5 @@
 # version: 1.0.0
 # authors: Albert Kolozsvari
 
-register_asset "stylesheets/notifications.scss"
+register_asset "stylesheets/rad.scss"
 
